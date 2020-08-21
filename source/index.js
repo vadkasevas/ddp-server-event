@@ -70,7 +70,7 @@ function Request (req, sock, body) {
     }
 
     function handleMessage(event) {
-        var data = JSON.parse(event.data);
+        var data = EJSON.parse(event.data);
         var message = data.msg;
 
         // binding EventEmitter .emit() method
@@ -85,6 +85,7 @@ function Request (req, sock, body) {
         // handle rpc calls
         } else if (message === 'method') {
             var prefixed = 'method:' + data.method;
+            //var params = EJSON.parse(JSON.stringify(data.params));
             this.emit.call(methods, prefixed, data.id, data.params);
         // sub and unsub
         } else if (message === 'sub' || message === 'unsub') {
